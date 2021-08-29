@@ -11,6 +11,19 @@ a {
   text-decoration: none;
 }
 
+nav {
+  padding: 10px 30px;
+  border: 1px solid;
+}
+
+nav a {
+  padding: 0 10px;
+}
+
+nav a:not(:last-child) {
+  border-right: 1px solid;
+}
+
 * {
   box-sizing: border-box;
 }

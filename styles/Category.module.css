@@ -1,0 +1,6 @@
+.cards {
+	display: flex;
+	flex-direction: column;
+	align-content: center;
+	width: 100%;
+}
