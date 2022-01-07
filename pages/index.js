@@ -1,10 +1,22 @@
+import { useState, useEffect } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "../styles/Home.module.css";
 import Layout from "../components/layout";
+import {useGetDocuments} from '../hooks/firebaseCustomHook';
 
-export default function Home() {
+export default function Home({categories}) {
+	// const [loading, setLoading] = useState(true);
+	// const [categories, setCategories] = useState([]);
+
+  // useEffect(() => {
+  //   useGetDocuments({ collectionName: "categories" }).then((categories) => {
+  //     setCategories(categories);
+  //     setLoading(false);
+  //   });
+  // }, []);
+
   return (
     <Layout>
       <Head>
@@ -17,9 +29,18 @@ export default function Home() {
         <h1 className={styles.title}>
           Welcome to <a href="#">Cookbook!</a>
         </h1>
-        <nav>
-          <Link href="/category"><a>Bakery</a></Link>
-        </nav>
+				{categories &&
+					<nav>
+						{categories.map(({name, slug, id}) => 
+							<Link 
+								key={id}
+								as={`/category/${encodeURIComponent(slug)}`}
+								href={'/category/[slug]'} >
+								<a>{name}</a>
+							</Link>
+							)}
+					</nav>
+				}
       </section>
 
       <footer className={styles.footer}>
@@ -36,4 +57,9 @@ export default function Home() {
       </footer>
     </Layout>
   );
+}
+
+Home.getInitialProps = async (context) => {
+  const categories = await useGetDocuments({ collectionName: "categories" });
+  return { categories: categories }
 }
